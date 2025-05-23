@@ -7,7 +7,7 @@
     border: 1px solid white;
 
     border-radius: 18px;
-    
+    display: flex;
 }
 
 
@@ -15,18 +15,32 @@
     padding: 30px 20px;
     background-color: var(--sub-color);
     border-radius: 10px;
+    
 }
 
 .userDataContent{
     background-color: var(--bg-color);
-    height: 100px;
+    min-height: 100px;
     border-radius: 10px;
     max-width: 400px;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 30px;
 }
 .userDataContent h2{
     font-size: 32px;;
+}
+
+.users__content{
+    background-color: var(--bg-color);
+    max-width: 400px;
+    height: auto;
+    margin-top: 40px;
+}
+
+.users-sort-container{
+    display: flex;
+    max-width: 50%;
 }

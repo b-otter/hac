@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
-import Footer from './components/footer/footer'
+// import Footer from './components/footer/footer'
 import Header from './components/header/header'
 import Main from './components/main/main'
 
@@ -15,7 +15,7 @@ function App() {
         <Route path="/" element={''} />
         <Route path="/" element={''} />
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }

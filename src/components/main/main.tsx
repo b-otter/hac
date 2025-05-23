@@ -1,6 +1,8 @@
 // import UserCard from "./users_card/user_card"
 import FileUpload from "./file_loyaut/file_loyaut"
 import Styles from "./main.module.css"
+import UserList from "./users_selector/users_selector"
+import UsersSort from "./users_sort/users_sort"
 function Main() {
   return (
     <main className={`${Styles.main} container`}>
@@ -13,9 +15,12 @@ function Main() {
           <div className={Styles.userDataContent}>
             <FileUpload />
           </div>
+          <div className={Styles.users__content}>
+            <UserList />
+          </div>
         </div>
-        <div className={Styles.usersadres_wrapper}>
-cddddddddddd
+        <div className={Styles.sort__wrapper_users}>
+          <UsersSort />
         </div>
       </div>
     </main>
