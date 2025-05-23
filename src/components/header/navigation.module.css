@@ -1,0 +1,17 @@
+.navigation{
+    max-width: 700px;
+    width: 100%;
+
+}
+
+.navigation ul{
+    display: flex;
+    justify-content: space-between;
+
+    padding-right: 5px;
+}
+
+.navigation a{
+    font-size: 32px;
+    color: black;
+}

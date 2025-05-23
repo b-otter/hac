@@ -1,7 +1,21 @@
+:root{
+  --bg-color: #E7ECF0;
+  --sub-color:#F4FAFF;
+}
 
-*{
+
+* {
+  list-style: none;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  
+  text-decoration: none;
 }
 
+
+.container{
+  max-width: 1920px;
+  width: 100%;
+  margin: 0 auto
+}

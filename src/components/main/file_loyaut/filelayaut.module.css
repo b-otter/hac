@@ -1,0 +1,10 @@
+.upload__button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-Color: #007bff;
+
+    color: white;
+    border-Radius: 4px;
+    cursor: pointer;
+
+}

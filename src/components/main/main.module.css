@@ -1,0 +1,32 @@
+.main{
+    
+    padding: 60px 45px;
+}
+.users__wrapper{
+    background-color: var(--sub-color);
+    border: 1px solid white;
+
+    border-radius: 18px;
+    
+}
+
+
+.userDataContainer_wrapper{
+    padding: 30px 20px;
+    background-color: var(--sub-color);
+    border-radius: 10px;
+}
+
+.userDataContent{
+    background-color: var(--bg-color);
+    height: 100px;
+    border-radius: 10px;
+    max-width: 400px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.userDataContent h2{
+    font-size: 32px;;
+}

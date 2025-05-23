@@ -1,0 +1,11 @@
+.logo a{
+    color: black;
+    font-size: 64px;
+}
+.logo{
+    display: flex;
+   max-width: 800px;
+   width: 100%;
+   justify-content: left;
+   padding-left: 210px;
+}

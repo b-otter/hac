@@ -1,8 +1,13 @@
+import Logo from "./logo"
+import Navigation from "./navigation"
+import Style from './header.module.css'
+
 function Header() {
   return (
-    <div>
-      <h1>Header</h1>
-    </div>
+    <header className={`${Style.header} container`}>
+      <Logo />
+      <Navigation />
+    </header>
   )
 }
 
