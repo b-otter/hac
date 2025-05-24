@@ -110,6 +110,36 @@ app.get('/api/normalize', async (req, res) => {
   }
 });
 
+app.get('/api/high-consumers', async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT 
+        accountId as accountId,
+        isCommercial,
+        address,
+        buildingType,
+        roomsCount,
+        residentsCount,
+        totalArea,
+        oct, nov, december, jan, feb, mar, apr,
+        ((oct + nov + december + jan + feb + mar + apr) / 7) AS avg_consumption
+      FROM users
+      HAVING avg_consumption > 3000
+      ORDER BY avg_consumption DESC
+    `);
+
+    res.json(rows);
+  } catch (error) {
+    console.error('Error fetching high consumers:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch high consumers',
+      details: error.message,
+    });
+  }
+});
+
+
 
 app.post('/api/upload', upload.single('file'), async (req, res) => {
   if (!req.file) {

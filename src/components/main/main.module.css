@@ -32,7 +32,11 @@
 .userDataContent h2{
     font-size: 32px;;
 }
-
+.high__consumers{
+    display: flex;
+    gap: 50px;
+    flex-direction: column;
+}
 .users__content{
     background-color: var(--bg-color);
     max-width: 400px;

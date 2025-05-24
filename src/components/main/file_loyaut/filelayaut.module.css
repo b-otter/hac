@@ -1,7 +1,7 @@
 .upload__button {
     display: inline-block;
     padding: 8px 16px;
-
+background-color:  var(--bg-color);
     color: black;
     border-Radius: 4px;
     cursor: pointer;

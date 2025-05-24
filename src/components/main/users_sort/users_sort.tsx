@@ -43,15 +43,15 @@ interface Normalize {
 function UsersSort() {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [normalize, setNormalize] = useState<Normalize[]>([]);
-  const [filteredUsers, setFilteredUsers] = useState<{account: Account, deviation: number, total: number, normTotal: number}[]>([]);
-  const [displayedUsers, setDisplayedUsers] = useState<{account: Account, deviation: number, total: number, normTotal: number}[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<{ account: Account, deviation: number, total: number, normTotal: number }[]>([]);
+  const [displayedUsers, setDisplayedUsers] = useState<{ account: Account, deviation: number, total: number, normTotal: number }[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(10);
   const [showCommercial, setShowCommercial] = useState<'all' | 'commercial' | 'non-commercial'>('non-commercial');
   const [minDeviation, setMinDeviation] = useState(40);
-  const [sortConfig, setSortConfig] = useState<{key: string, direction: 'asc' | 'desc'}>({key: 'deviation', direction: 'desc'});
+  const [sortConfig, setSortConfig] = useState<{ key: string, direction: 'asc' | 'desc' }>({ key: 'deviation', direction: 'desc' });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,14 +83,14 @@ function UsersSort() {
 
   const calculateDeviation = (account: Account, norm: Normalize | undefined): number => {
     if (!norm) return 0;
-    
-    const accountTotal = account.jan + account.feb + account.mar + account.apr + 
-                         account.may + account.jun + account.jul + account.aug + 
-                         account.sep + account.oct + account.nov + account.december;
-    
-    const normTotal = norm.jan + norm.feb + norm.mar + norm.apr + 
-                      norm.may + norm.jun + norm.jul + norm.aug + 
-                      norm.sep + norm.oct + norm.nov + norm.december;
+
+    const accountTotal = account.jan + account.feb + account.mar + account.apr +
+      account.may + account.jun + account.jul + account.aug +
+      account.sep + account.oct + account.nov + account.december;
+
+    const normTotal = norm.jan + norm.feb + norm.mar + norm.apr +
+      norm.may + norm.jun + norm.jul + norm.aug +
+      norm.sep + norm.oct + norm.nov + norm.december;
 
     return normTotal > 0 ? Math.round((accountTotal / normTotal) * 100 - 100) : 0;
   };
@@ -103,48 +103,48 @@ function UsersSort() {
     setSortConfig({ key, direction });
   };
 
- useEffect(() => {
-  if (accounts.length > 0 && normalize.length > 0) {
-    const filtered = accounts
-      .map(account => {
-        const norm = normalize.find(
-          n => n.rooms === account.roomsCount && n.residents === account.residentsCount
-        );
-        const total = account.jan + account.feb + account.mar + account.apr + 
-                     account.may + account.jun + account.jul + account.aug + 
-                     account.sep + account.oct + account.nov + account.december;
-        const normTotal = norm ? norm.jan + norm.feb + norm.mar + norm.apr + 
-                               norm.may + norm.jun + norm.jul + norm.aug + 
-                               norm.sep + norm.oct + norm.nov + norm.december : 0;
-        const deviation = calculateDeviation(account, norm);
-        return { account, deviation, total, normTotal };
-      })
-      .filter(item => {
-        const deviationFilter = Math.abs(item.deviation) >= minDeviation;
-        let commercialFilter = true;
-        if (showCommercial === 'commercial') {
-          commercialFilter = item.account.isCommercial;
-        } else if (showCommercial === 'non-commercial') {
-          commercialFilter = !item.account.isCommercial;
+  useEffect(() => {
+    if (accounts.length > 0 && normalize.length > 0) {
+      const filtered = accounts
+        .map(account => {
+          const norm = normalize.find(
+            n => n.rooms === account.roomsCount && n.residents === account.residentsCount
+          );
+          const total = account.jan + account.feb + account.mar + account.apr +
+            account.may + account.jun + account.jul + account.aug +
+            account.sep + account.oct + account.nov + account.december;
+          const normTotal = norm ? norm.jan + norm.feb + norm.mar + norm.apr +
+            norm.may + norm.jun + norm.jul + norm.aug +
+            norm.sep + norm.oct + norm.nov + norm.december : 0;
+          const deviation = calculateDeviation(account, norm);
+          return { account, deviation, total, normTotal };
+        })
+        .filter(item => {
+          const deviationFilter = Math.abs(item.deviation) >= minDeviation;
+          let commercialFilter = true;
+          if (showCommercial === 'commercial') {
+            commercialFilter = item.account.isCommercial;
+          } else if (showCommercial === 'non-commercial') {
+            commercialFilter = !item.account.isCommercial;
+          }
+          return deviationFilter && commercialFilter;
+        });
+
+      // Сортировка
+      filtered.sort((a, b) => {
+        if (a[sortConfig.key as keyof typeof a] < b[sortConfig.key as keyof typeof b]) {
+          return sortConfig.direction === 'asc' ? -1 : 1;
         }
-        return deviationFilter && commercialFilter;
+        if (a[sortConfig.key as keyof typeof a] > b[sortConfig.key as keyof typeof b]) {
+          return sortConfig.direction === 'asc' ? 1 : -1;
+        }
+        return 0;
       });
 
-    // Сортировка
-    filtered.sort((a, b) => {
-      if (a[sortConfig.key as keyof typeof a] < b[sortConfig.key as keyof typeof b]) {
-        return sortConfig.direction === 'asc' ? -1 : 1;
-      }
-      if (a[sortConfig.key as keyof typeof a] > b[sortConfig.key as keyof typeof b]) {
-        return sortConfig.direction === 'asc' ? 1 : -1;
-      }
-      return 0;
-    });
-
-    setFilteredUsers(filtered);
-    setCurrentPage(1);
-  }
-}, [accounts, normalize, showCommercial, minDeviation, sortConfig]);
+      setFilteredUsers(filtered);
+      setCurrentPage(1);
+    }
+  }, [accounts, normalize, showCommercial, minDeviation, sortConfig]);
   // Пагинация
   useEffect(() => {
     const indexOfLastUser = currentPage * usersPerPage;
@@ -164,34 +164,34 @@ function UsersSort() {
   return (
     <div className="users-sort-container">
       <h1>Фильтр потребителей</h1>
-      
+
       <div className="filters">
         <div className="filter-group">
-          <label>Тип потребителя:</label>
-          <button 
+          <span>Тип потребителя:</span>
+          <button
             className={showCommercial === 'all' ? 'active' : ''}
             onClick={() => setShowCommercial('all')}
           >
             Все
           </button>
-          <button 
+          <button
             className={showCommercial === 'commercial' ? 'active' : ''}
             onClick={() => setShowCommercial('commercial')}
           >
             Коммерческие
           </button>
-          <button 
+          <button
             className={showCommercial === 'non-commercial' ? 'active' : ''}
             onClick={() => setShowCommercial('non-commercial')}
           >
             Некоммерческие
           </button>
         </div>
-        
+
         <div className="filter-group">
-          <label>Минимальное отклонение (%):</label>
-          <input 
-            type="number" 
+          <span>Минимальное отклонение (%):</span>
+          <input
+            type="number"
             value={minDeviation}
             onChange={(e) => setMinDeviation(Number(e.target.value))}
             min="0"
@@ -200,7 +200,7 @@ function UsersSort() {
       </div>
 
       <div className="results-info">
-        <p>Найдено потребителей: {filteredUsers.length}</p>
+        <p>Найдено потребителей: <span>{filteredUsers.length}</span></p>
       </div>
 
       {filteredUsers.length === 0 ? (
@@ -218,17 +218,19 @@ function UsersSort() {
                   <th>Адрес</th>
                   <th>Комнат</th>
                   <th>Жильцов</th>
-                  <th onClick={() => requestSort('total')}>
+                  <th className='total'
+                    onClick={() => requestSort('total')}>
                     Потребление {sortConfig.key === 'total' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
                   </th>
                   <th>Норматив</th>
-                  <th onClick={() => requestSort('deviation')}>
+                  <th className='deviation'
+                    onClick={() => requestSort('deviation')}>
                     Отклонение {sortConfig.key === 'deviation' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {displayedUsers.map(({account, deviation, total, normTotal}) => (
+                {displayedUsers.map(({ account, deviation, total, normTotal }) => (
                   <tr key={account.accountd}>
                     <td>{account.accountd}</td>
                     <td>{account.isCommercial ? 'Коммерческий' : 'Некоммерческий'}</td>

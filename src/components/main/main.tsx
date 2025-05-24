@@ -1,8 +1,10 @@
 // import UserCard from "./users_card/user_card"
 import FileUpload from "./file_loyaut/file_loyaut"
+import HighConsumersTable from "./high_consumers/HighConsumersTable"
 import Styles from "./main.module.css"
 import UserList from "./users_selector/users_selector"
 import UsersSort from "./users_sort/users_sort"
+
 function Main() {
   return (
     <main className={`${Styles.main} container`}>
@@ -19,9 +21,14 @@ function Main() {
             <UserList />
           </div>
         </div>
-        <div className={Styles.sort__wrapper_users}>
+        <div className={Styles.high__consumers}>
+
           <UsersSort />
+
+          <HighConsumersTable />
         </div>
+
+
       </div>
     </main>
   )
