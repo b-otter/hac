@@ -18,6 +18,16 @@ app.use(cors({
   allowedHeaders: ['Content-Type']
 }));
 
+app.get('/api/proxycrawl', async (req, res) => {
+  try {
+    const { url } = req.query;
+    const response = await axios.get(`https://api.proxycrawl.com/?token=rb2ynfA_vNdk90lhzWedvQ&url=${url}`);
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true }));
 
