@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// Настройки CORS
+
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'OPTIONS'],
@@ -21,7 +21,6 @@ app.use(cors({
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Подключение к MySQL
 const db = mysql.createPool({
   host: 'localhost',
   user: 'root',
@@ -32,7 +31,7 @@ const db = mysql.createPool({
   queueLimit: 0
 });
 
-// Проверка соединения с БД
+
 db.getConnection()
   .then(conn => {
     conn.release();
@@ -42,7 +41,6 @@ db.getConnection()
     console.error('MySQL connection error:', err);
   });
 
-// Настройка Multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadDir = path.join(__dirname, 'uploads');
@@ -61,7 +59,7 @@ const upload = multer({
   limits: { fileSize: 50 * 1024 * 1024 }
 });
 
-// Маршрут для получения списка пользователей
+
 app.get('/api/users', async (req, res) => {
   try {
     const [rows] = await db.query(`
@@ -89,7 +87,7 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
-// Маршрут для получения нормативов
+
 app.get('/api/normalize', async (req, res) => {
   try {
     const [rows] = await db.query(`
@@ -112,7 +110,7 @@ app.get('/api/normalize', async (req, res) => {
   }
 });
 
-// Маршрут загрузки файла
+
 app.post('/api/upload', upload.single('file'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ 
@@ -130,7 +128,6 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
       throw new Error('Invalid JSON format: expected array');
     }
 
-    // Подготовка данных с accountId как PRIMARY KEY
     const values = jsonData.map(item => {
       if (!item.accountId) {
         throw new Error('Missing required field: accountId');
@@ -159,7 +156,7 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
       ];
     });
 
-    // Используем REPLACE вместо INSERT для обновления существующих записей
+
     const [result] = await db.query(`
       REPLACE INTO users 
       (accountId, isCommercial, address, buildingType, roomsCount, residentsCount, totalArea, 

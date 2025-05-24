@@ -147,7 +147,6 @@ function UserList() {
       <h1>Анализ потребления электроэнергии</h1>
       
       <div className="account-selector">
-
         <select
           name="accounts"
           id="accounts-select"
@@ -214,6 +213,7 @@ function UserList() {
               </div>
             </div>
           )}
+          
         </div>
       )}
     </div>
