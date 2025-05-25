@@ -1,10 +1,8 @@
-
-
-
 import { useState } from 'react';
 import Styles from "./filelayaut.module.css";
 import iconload from "./../../../assets/icon_load.png";
-
+import DownloadProcessedFile from './DownloadProcessedFile';
+// import DownloadProcessedFile from './DownloadProcessedFile'
 interface UploadResponse {
   success: boolean;
   message?: string;
@@ -34,10 +32,11 @@ function FileUpload() {
   const [debugLog, setDebugLog] = useState<string[]>([]);
   const [commercialCount, setCommercialCount] = useState(0);
   const [nonCommercialCount, setNonCommercialCount] = useState(0);
+  const [showDownload, setShowDownload] = useState(false);
+  const [processedData, setProcessedData] = useState<FileDataItem[] | null>(null);
 
-  // Полный список коммерческих назначений из 2GIS API
   const COMMERCIAL_PURPOSES = [
-    'административное здание',
+     'административное здание',
     'бизнес центр',
     'гостиница',
     'торговый центр',
@@ -129,8 +128,7 @@ function FileUpload() {
 
     'завод', 'фабрика', 'цех', 'производство', 'мастерская', 'склад',
     'логистический комплекс', 'индустриальный парк', 'промзона', 'технопарк',
-    'лаборатория', 'упаковка', 'печать', 'пошив', 'изготовление', 'сборка'
-
+    'лаборатория', 'упаковка', 'печать', 'пошив', 'изготовление', 'сборка',
 
   ].map(p => p.toLowerCase());
 
@@ -147,6 +145,7 @@ function FileUpload() {
         setMessage({ text: '', type: '' });
         setCommercialCount(0);
         setNonCommercialCount(0);
+        setShowDownload(false);
         addDebugLog(`Файл выбран: ${file.name}`);
       } else {
         setMessage({ text: 'Пожалуйста, выберите JSON файл', type: 'error' });
@@ -173,7 +172,6 @@ function FileUpload() {
         const purposeName = data.result.items[0]?.purpose_name?.toLowerCase() || '';
         addDebugLog(`Назначение объекта: ${purposeName}`);
 
-        // Проверяем есть ли purpose_name в нашем списке коммерческих назначений
         const isCommercial = COMMERCIAL_PURPOSES.some(
           commercialPurpose => purposeName.includes(commercialPurpose)
         );
@@ -241,6 +239,7 @@ function FileUpload() {
       }
 
       const processedData = await processFileData(jsonData);
+      setProcessedData(processedData);
 
       const formData = new FormData();
       formData.append('file', new Blob([JSON.stringify(processedData)], {
@@ -260,6 +259,7 @@ function FileUpload() {
         type: 'success'
       });
       setProgress(100);
+      setShowDownload(true);
 
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Неизвестная ошибка';
@@ -330,6 +330,14 @@ function FileUpload() {
           </div>
         )}
       </div>
+
+      {showDownload && processedData && (
+        <DownloadProcessedFile 
+          processedData={processedData}
+          originalFileName={selectedFile?.name || 'data.json'}
+          onClose={() => setShowDownload(false)}
+        />
+      )}
     </div>
   );
 }
