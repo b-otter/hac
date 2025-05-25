@@ -5,7 +5,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import mysql from 'mysql2/promise';
-
+import img from './'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -111,7 +111,7 @@ app.get('/api/normalize', async (req, res) => {
     
     res.json(rows);
   } catch (error) {
-    console.error('Error fetching normalize:', error);
+    console.error('Error fetching:', error);
     res.status(500).json({ 
       success: false,
       error: 'Failed to fetch normalize data',
